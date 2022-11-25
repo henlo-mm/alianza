@@ -1,0 +1,143 @@
+<template>
+    <div>
+        <v-app-bar clipped-left app flat>
+            <img
+                class="img-fluid"
+                src="https://www.psicoalianza.com/build/img/logo-color-psicoalianza-pruebas-psicotecnicas.webp"
+            />
+            <v-spacer></v-spacer>
+
+            <v-menu offset-y nudge-bottom='8'>
+                <template v-slot:activator="{ on, attrs }">
+                    <div class="d-flex flex-column mb-6 mt-6">
+                        <h6 style="color: #304FFE;">Usuario Usuario</h6>
+                        <h6 class="font-weight-regular">Administrador</h6>
+                    </div>
+                    
+                    <v-btn
+                        v-ripple="false"
+                        plain
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-list-item-avatar>
+                            <v-img src="../assets/woman.png"></v-img>
+                        </v-list-item-avatar>
+                    </v-btn>    
+                </template>
+                
+                <v-list class="menu">
+                    <v-list-item
+                        v-for="(item, index) in subList"
+                        :key="index"
+                        class="hover-item"
+                        link
+                    >
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+
+        </v-app-bar>
+
+        <v-navigation-drawer
+            app
+            clipped
+            color="indigo accent-4"
+            dark
+            v-model="drawer"
+            :mini-variant.sync="mini"
+            permanent
+        >
+            <v-list-item class="px-2">
+                <v-app-bar-nav-icon @click.stop="mini = !mini"></v-app-bar-nav-icon>
+            </v-list-item>
+    
+            <v-divider></v-divider>
+
+            <v-list>
+                
+                <v-list-group
+                    v-for="item in items"
+                    :key="item.title"
+                    link
+                >
+                <v-list-item class="pa-0" slot='activator' :to="item.route">
+                    <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                
+                </v-list-item>
+
+                <v-list-item class="pl-8" v-for='sub in item.subLinks' :key="sub.title" link>
+                    <v-list-item-icon>
+                        <v-icon>{{ sub.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title :to="sub.route">{{ sub.title }}</v-list-item-title>
+                </v-list-item>
+                
+                </v-list-group>
+            </v-list>
+        </v-navigation-drawer>
+       
+    </div>
+</template>
+
+<script>
+
+export default {
+  name: 'VerticalBar',
+  components: {
+  
+  },
+
+  data () {
+      return {
+        drawer: true,
+        items: [
+            { title: 'Home', icon: 'mdi-home' },
+            { 
+            title: 'Listas', 
+            icon: 'mdi-playlist-plus',
+            route: "/managers",
+            subLinks: [
+                { title: "Empleados", route: "/managers/add", icon: 'mdi-account-group-outline'},
+                { title: "Cargos", route: "/managers", icon: 'mdi-briefcase-account-outline'}
+            ]
+
+            },
+        ],
+        subList: [
+            { title: 'Perfil'},
+            { title: 'Configuración', route: "/managers" },
+            { title: 'Soporte' },
+            { title: 'Salir', route: "/managers" },
+        ],
+        mini: true,
+      }
+    },
+};
+
+</script>
+
+<style>
+
+.menu {
+    background-color: #f5f5f5 !important;
+}
+
+.v-menu__content {
+    box-shadow: none;
+    width: 130px;
+}
+
+.hover-item:hover {
+    background-color: #304FFE !important;
+    color: white;
+}
+</style>
+
+
