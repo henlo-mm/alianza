@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-flex align-start mb-6  ml-4">
-            <v-btn icon class="mt-2" color="indigo" to="/dashboard">
+            <v-btn icon class="mt-2" color="indigo" href="/dashboard">
                 <v-icon> mdi-arrow-left</v-icon>
             </v-btn>
             <h1 class="font-weight-regular">Empleados</h1>
@@ -27,8 +27,6 @@
        
         <v-card class="ml-8 mr-8 mb-6">
             <v-card-title>
-         
-            <v-spacer></v-spacer>
             <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -60,15 +58,32 @@
         
             </v-data-table>
         </v-card>
-        <v-dialog v-model="dialogDelete" max-width="300px">
-          <v-card>
-            <v-card-title class="text-h5">¿Quieres eliminar este registro?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1 text-center" text @click="closeDelete">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">Aceptar</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
+        <v-dialog v-model="dialogDelete" max-width="400px">
+          <v-card class="text-center">
+              <v-icon
+                class="mt-10"
+                color="indigo"
+                large
+              >
+                  mdi-delete-outline
+              </v-icon>
+              <h2 class="font-weight-medium mt-4">Borrar empleado</h2>
+              <h5 class="mt-6">¿Está seguro de borrar a ?</h5>
+              
+              <v-card-actions>
+                <v-spacer></v-spacer>
+               
+                  <v-btn rounded  @click="closeDelete" small>
+                      Cancelar
+                  </v-btn>
+                  
+                  <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
+                      Aceptar
+                  </v-btn>
+               
+                <v-spacer></v-spacer>
+              
+              </v-card-actions>
           </v-card>
         </v-dialog>
         
@@ -186,3 +201,9 @@ import UserModal from './User'
     }
   }
 </script>
+
+<style>
+::v-deep .v-data-table-header {
+  background-color: #DCDCDC;
+}
+</style>

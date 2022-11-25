@@ -28,8 +28,6 @@
        
         <v-card class="mr-8 ml-8 mb-8">
             <v-card-title>
-         
-            <v-spacer></v-spacer>
             <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -69,13 +67,30 @@
         </v-card>
         <v-dialog v-model="dialogDelete" max-width="300px">
           <v-card>
-            <v-card-title class="text-h5">¿Quieres eliminar este registro?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1 text-center" text @click="closeDelete">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">Aceptar</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
+            <v-icon
+                class="mt-10"
+                color="indigo"
+                large
+              >
+                  mdi-delete-outline
+              </v-icon>
+              <h2 class="font-weight-medium mt-4">Borrar cargo</h2>
+              <h5 class="mt-6">¿Está seguro de borrar este cargo?</h5>
+              
+              <v-card-actions>
+                <v-spacer></v-spacer>
+               
+                  <v-btn rounded  @click="closeDelete" small>
+                      Cancelar
+                  </v-btn>
+                  
+                  <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
+                      Aceptar
+                  </v-btn>
+               
+                <v-spacer></v-spacer>
+              
+              </v-card-actions>
           </v-card>
         </v-dialog>
         <PositionModal :visible="show" @close="show=false" />

@@ -60,7 +60,6 @@
                     v-for="item in items"
                     :key="item.title"
                     link
-                    
                 >
                     <v-list-item class="pa-0" slot='activator' :to="item.route">
                         <v-list-item-icon>
@@ -129,11 +128,15 @@ export default {
     box-shadow: none;
     width: 130px;
 }
+.v-application .primary--text {
+    color: none;
+    caret-color: #1976d2 !important;
+}
 
-.hover-item:hover {
+/* .hover-item:hover {
     background-color: #304FFE !important;
     color: white;
-}
+} */
 </style>
 
 
