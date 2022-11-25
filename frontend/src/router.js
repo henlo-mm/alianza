@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ExampleTest from './components/Example.vue'
+import LoginUser from './components/Login.vue'
 import DashboardMain from './components/Dashboard.vue'
 import DashboardView from './components/DashboardView.vue'
-import HelloWorld from './components/HelloWorld.vue'
+import HomeContent from './components/Home.vue'
 import EmployeeList from './components/EmployeeList.vue'
 import PositionEmployee from './components/Position.vue'
 
@@ -16,7 +16,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: ExampleTest
+      component: LoginUser
     },
     {
       path: '/dashboard',
@@ -31,7 +31,7 @@ export default new Router({
             {
               path: '',
               name: 'Hello',
-              component: HelloWorld
+              component: HomeContent
 
             }
           ]

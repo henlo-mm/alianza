@@ -101,7 +101,7 @@
 
 
 export default {
-  name: 'ExampleTest',
+  name: 'LoginUser',
 
   components: {
    

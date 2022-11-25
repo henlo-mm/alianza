@@ -55,34 +55,31 @@
             </v-list-item>
     
             <v-divider></v-divider>
-
             <v-list>
-                
                 <v-list-group
                     v-for="item in items"
                     :key="item.title"
                     link
-                >
-                <v-list-item class="pa-0" slot='activator' :to="item.route">
-                    <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-icon>
                     
+                >
+                    <v-list-item class="pa-0" slot='activator' :to="item.route">
+                        <v-list-item-icon>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-item-icon>
+                        
                         <v-list-item-title>{{ item.title }}</v-list-item-title>
-                
-                </v-list-item>
+                    
+                    </v-list-item>
 
-                <v-list-item class="pl-8" v-for='sub in item.subLinks' :key="sub.title" link>
-                    <v-list-item-icon>
-                        <v-icon>{{ sub.icon }}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title :to="sub.route">{{ sub.title }}</v-list-item-title>
-                </v-list-item>
-                
+                    <v-list-item class="pl-8" v-for='sub in item.subLinks' :to="sub.route" :key="sub.title" link>
+                        <v-list-item-icon>
+                            <v-icon>{{ sub.icon }}</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title >{{ sub.title }}</v-list-item-title>
+                    </v-list-item>
                 </v-list-group>
             </v-list>
         </v-navigation-drawer>
-       
     </div>
 </template>
 
@@ -100,13 +97,12 @@ export default {
         items: [
             { title: 'Home', icon: 'mdi-home' },
             { 
-            title: 'Listas', 
-            icon: 'mdi-playlist-plus',
-            route: "/managers",
-            subLinks: [
-                { title: "Empleados", route: "/managers/add", icon: 'mdi-account-group-outline'},
-                { title: "Cargos", route: "/managers", icon: 'mdi-briefcase-account-outline'}
-            ]
+                title: 'Listas', 
+                icon: 'mdi-playlist-plus',
+                subLinks: [
+                    { title: "Empleados", route: "/dashboard/employee", icon: 'mdi-account-group-outline'},
+                    { title: "Cargos", route: "/dashboard/position", icon: 'mdi-briefcase-account-outline'}
+                ]
 
             },
         ],

@@ -3,8 +3,6 @@
     <v-row class="mt-6">
       <div class="d-flex align-center  flex-column mb-6 mt-6">
           <h2 class="font-weight-light">¡Bienvenido/a!</h2>
-          
-          
           <h2 class="font-weight-light">¡Usuario Usuario!</h2>
           <p class="mt-16">Añade los datos personales de tus empleados y después agrega su cargo en tu empresa</p>
           <v-btn
@@ -18,9 +16,6 @@
           </v-btn>
           <p style="color: #808080; font-size: 12px;">Empieza aquí</p>
       </div>
-      
-
-    
         
     </v-row>
 
@@ -38,7 +33,7 @@
 
 import UserModal from './User'
   export default {
-    name: 'HelloWorld',
+    name: 'HomeContent',
     components: {
       UserModal
 
