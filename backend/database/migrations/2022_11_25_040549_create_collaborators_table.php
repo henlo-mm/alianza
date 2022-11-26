@@ -15,9 +15,9 @@ class CreateCollaboratorsTable extends Migration
     {
         Schema::create('collaborators', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();;
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->bigInteger('collaborator_id')->unsigned();
+            $table->bigInteger('collaborator_id')->unsigned()->nullable();;
             $table->foreign('collaborator_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
             $table->timestamps();
         });

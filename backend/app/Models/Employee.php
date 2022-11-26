@@ -9,15 +9,20 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $table = 'users';
+
     protected $fillable = [
-        'document',
-        'first_name',
+        'name',
         'last_name',
-        'email',
+        'document',
+        'address',
+        'phone',
+        'states_id',
+        'city_id',
     ];
 
     public function position()
     {
-        return $this->hasMany(Position::class, 'position_id');
+        return $this->hasMany(PositionEmployee::class, 'employee_id');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use Validator;
+use DB;
 
 class EmployeeController extends Controller
 {
@@ -24,26 +26,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        try {
-            $validator = Validator::make($request->all(),[
-                'name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'document' => 'required|integer',
-            ]);
-    
-            if($validator->fails()){
-                return response()->json($validator->errors());       
-            }
-    
-            $employee = Employee::create($request->all());
-    
-            return response()->json(['employeee agregado', $employee]);
-
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return response()->json(['Ha ocurrido un error', $th]);
-           
-        } 
+        
     }
 
     /**
@@ -54,7 +37,40 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            \Log::info($request);
+          /*   $validator = Validator::make($request->all(),[
+                'name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'dni' => 'required|integer',
+            ]);
+    
+            if($validator->fails()){
+                return response()->json($validator->errors());       
+            } */
+    
+            $employee = Employee::create(
+                [
+
+                    'name' => $request->name,
+                    'last_name' => $request->lastName,
+                    'document' => $request->document,
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'states_id' => $request->department,
+                    'city_id' => $request->city
+                ]
+            );
+
+            \Log::info($employee);
+    
+            return response()->json(['employeee agregado', $employee]);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['Ha ocurrido un error', $th]);
+           
+        } 
     }
 
     /**

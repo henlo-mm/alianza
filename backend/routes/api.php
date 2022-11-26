@@ -19,9 +19,9 @@ Route::post('/signup', [App\Http\Controllers\AuthController::class, 'signUp']);
 
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 
+Route::resource('employees', App\Http\Controllers\EmployeeController::class);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     
-    Route::resource('employees', App\Http\Controllers\EmployeeController::class);
 
     //CSV file
    /*  Route::get('clients_export',[App\Http\Controllers\ClientController::class, 'export']);

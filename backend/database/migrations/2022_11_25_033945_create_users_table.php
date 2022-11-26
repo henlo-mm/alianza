@@ -15,17 +15,17 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_names');
-            $table->string('dni');
-            $table->string('street_address');
+            $table->string('name');
+            $table->string('last_name');
+            $table->string('document');
+            $table->string('address');
             $table->string('phone');
-            $table->bigInteger('rol_id')->unsigned();
-            $table->foreign('rol_id')->references('id')->on('roles')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->bigInteger('states_id')->unsigned();
-            $table->foreign('states_id')->references('id')->on('states')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->bigInteger('city_id')->unsigned();
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->unsignedBigInteger('rol_id')->nullable();;
+            $table->foreign('rol_id')->references('id')->on('roles');
+            $table->unsignedBigInteger('states_id')->nullable();;
+            $table->foreign('states_id')->references('id')->on('states');
+            $table->unsignedBigInteger('city_id')->nullable();;
+            $table->foreign('city_id')->references('id')->on('cities');
             $table->timestamps();
         });
     }
