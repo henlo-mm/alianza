@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::post('/signup', [App\Http\Controllers\AuthController::class, 'signUp']);
+
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    
+    Route::resource('employees', App\Http\Controllers\EmployeeController::class);
+
+    //CSV file
+   /*  Route::get('clients_export',[App\Http\Controllers\ClientController::class, 'export']);
+    Route::post('clients_import',[App\Http\Controllers\ClientController::class, 'import']);
+
+    Route::resource('products', App\Http\Controllers\ProductController::class);
+    Route::resource('bills', App\Http\Controllers\BillController::class);
+    Route::resource('bills_products', App\Http\Controllers\BillProductController::class); */
+
+    Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

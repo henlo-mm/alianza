@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->bigInteger('rol_id')->unsigned();
             $table->foreign('rol_id')->references('id')->on('roles')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->bigInteger('country_id')->unsigned();
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->bigInteger('states_id')->unsigned();
+            $table->foreign('states_id')->references('id')->on('states')->onDelete('SET NULL')->onUpdate('cascade');
             $table->bigInteger('city_id')->unsigned();
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
             $table->timestamps();
