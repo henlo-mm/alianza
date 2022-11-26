@@ -102,6 +102,10 @@
                 <v-select
                     v-model="form.department"
                     label="Selecciona un departamento"
+                    :items="states"
+                    item-text="name"
+                    item-value="id"
+                    @change="getCities"
                     solo
                     rounded
                     dense
@@ -117,6 +121,9 @@
                 <v-select
                     v-model="form.city"
                     label="Selecciona una ciudad"
+                    :items="cities"
+                    item-text="name"
+                    item-value="id"
                     solo
                     rounded
                     dense
@@ -168,9 +175,15 @@ export default {
                 phone: '',
                 department: null,
                 city: null,
-            }
+            },
+            states: null,
+            cities: null
         }
 
+    },
+    created () {
+      this.getStates()
+        
     },
     computed: {
         show: {
@@ -182,12 +195,13 @@ export default {
                     this.$emit('close')
                 }
             }
-        }
+        },
+   
     },
     methods: {
         storeEmployee () {
             try {
-                console.log(this.form)
+               
                 axios
                 .post('http://127.0.0.1:8000/api/employees', this.form, {
                 headers: {
@@ -199,6 +213,37 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+        },
+        async getStates () {
+            try {
+                
+              await axios
+                .get('http://127.0.0.1:8000/api/states')
+                .then(response => (
+                    this.states = response.data 
+                     
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
+        },
+        getCities (id) {
+            try {
+              
+                this.form.department = id
+                
+                axios
+                .post('http://127.0.0.1:8000/api/cities', { state_id: this.form.department })
+                .then(response => (
+                    this.cities = response.data  
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 }

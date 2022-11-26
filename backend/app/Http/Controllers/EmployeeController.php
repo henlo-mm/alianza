@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\State;
+use App\Models\City;
 use Validator;
 use DB;
 
@@ -125,5 +127,22 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return response()->json(['employeee eliminado', $employee]);
+    }
+
+    public function getStates() 
+    {
+        $states = State::all();
+
+        return response()->json($states);
+
+    }
+
+    public function getCities(Request $request)
+    {
+    
+        $cities = City::where('states_id', $request->state_id)->get();
+
+        return response()->json($cities);
+
     }
 }
