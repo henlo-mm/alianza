@@ -40,6 +40,7 @@
               :items="employees"
               :search="search"
           >
+       
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon
                   class="mr-2"
@@ -63,37 +64,41 @@
             <template v-slot:[`item.city_id`]="{ item }"> 
               {{ item.city.name}}
             </template>
+            <template v-slot:top>
+
+              <v-dialog v-model="dialogDelete" max-width="350px">
+                <v-card class="text-center">
+                    <v-icon
+                      class="mt-6"
+                      color="indigo"
+                      large
+                    >
+                        mdi-delete-outline
+                    </v-icon>
+                  
+                    <h2 class="font-weight-medium mt-4">Borrar empleado</h2>
+                    <h5 class="font-weight-regular mt-6">¿Está seguro de borrar a <span class="font-weight-medium">{{ item.name}}</span>?</h5>
+                    
+                    <v-card-actions class="mt-4">
+                      <v-spacer></v-spacer>
+                     
+                        <v-btn rounded  @click="closeDelete" small>
+                            Cancelar
+                        </v-btn>
+                        
+                        <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
+                            Aceptar
+                        </v-btn>
+                     
+                      <v-spacer></v-spacer>
+                    
+                    </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </template>
         
           </v-data-table>
         </v-card>
-        <v-dialog v-model="dialogDelete" max-width="400px">
-          <v-card class="text-center">
-              <v-icon
-                class="mt-10"
-                color="indigo"
-                large
-              >
-                  mdi-delete-outline
-              </v-icon>
-              <h2 class="font-weight-medium mt-4">Borrar empleado</h2>
-              <h5 class="mt-6">¿Está seguro de borrar a ?</h5>
-              
-              <v-card-actions>
-                <v-spacer></v-spacer>
-               
-                  <v-btn rounded  @click="closeDelete" small>
-                      Cancelar
-                  </v-btn>
-                  
-                  <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
-                      Aceptar
-                  </v-btn>
-               
-                <v-spacer></v-spacer>
-              
-              </v-card-actions>
-          </v-card>
-        </v-dialog>
         
         <UserModal :visible="show" @close="show=false" />
         
@@ -123,9 +128,11 @@ import UserModal from './User'
         showModalEdit: false,
         dialog: false,
         dialogDelete: false,
+        item: {},
         employees: [],
         employee: null,
         states: [],
+        editedIndex: null,
        /*  singleSelect: false,
         selected: [], */
         headers: [
@@ -201,12 +208,21 @@ import UserModal from './User'
 
       },
       deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        
+        this.index = item.id
+        this.item = item
+
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
+       
+        axios
+          .delete('http://127.0.0.1:8000/api/employees/delete/'+ this.index )
+            .then((response) => {
+              this.employees.splice(this.index, 1)
+              console.log(this.employees)
+              console.log(response)
+        })
         this.closeDelete()
       },
       closeDelete () {

@@ -112,7 +112,6 @@ class EmployeeController extends Controller
      */
     public function update(Request $request)
     {
-\Log::info($request);
 
         $employee = Employee::where('id', $request->id)
                 ->update([
@@ -134,8 +133,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
+        $employee = Employee::find($id);
         $employee->delete();
 
         return response()->json(['employeee eliminado', $employee]);
