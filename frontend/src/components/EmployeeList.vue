@@ -96,10 +96,9 @@
         </v-dialog>
         
         <UserModal :visible="show" @close="show=false" />
-
-        <template v-if="ready">
-          <EditEmployee :visible-modal="showModalEdit" :data="employee" @close="showModalEdit = false" />
-        </template>
+        
+        <EditEmployee :visible-modal="showModalEdit" v-if="employee" :states="states" :data="employee" @close="showModalEdit = false" />
+        
      
     </div>
 </template>
@@ -125,8 +124,8 @@ import UserModal from './User'
         dialog: false,
         dialogDelete: false,
         employees: [],
-        ready: false,
         employee: null,
+        states: [],
        /*  singleSelect: false,
         selected: [], */
         headers: [
@@ -148,6 +147,11 @@ import UserModal from './User'
       }
     },
     created () {
+      
+      
+      this.getStates()
+    },
+    mounted() {
       this.getEmployees()
     },
     watch: {
@@ -167,9 +171,23 @@ import UserModal from './User'
               .get('http://127.0.0.1:8000/api/employees')
               .then((response) => {
                 this.employees = response.data 
-                this.ready = true
                       
           })
+              
+          } catch (error) {
+              console.log(error)
+          }
+
+      },
+      async getStates () {
+          try {
+              
+            await axios
+              .get('http://127.0.0.1:8000/api/states')
+              .then(response => (
+                  this.states = response.data 
+                    
+              ))
               
           } catch (error) {
               console.log(error)
@@ -180,7 +198,6 @@ import UserModal from './User'
       {
         this.showModalEdit = true
         this.employee = item.id 
-        this.ready = true
 
       },
       deleteItem (item) {

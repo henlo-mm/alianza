@@ -20,6 +20,7 @@ Route::post('/signup', [App\Http\Controllers\AuthController::class, 'signUp']);
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 
 Route::resource('employees', App\Http\Controllers\EmployeeController::class);
+Route::post('employees/edit',[App\Http\Controllers\EmployeeController::class, 'update']);
 Route::get('states',[App\Http\Controllers\EmployeeController::class, 'getStates']);
 Route::post('cities',[App\Http\Controllers\EmployeeController::class, 'getCities']);
 

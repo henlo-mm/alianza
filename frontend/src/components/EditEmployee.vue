@@ -85,10 +85,15 @@
                         v-model="form.department"
                         label="Selecciona un departamento"
                         solo
+                        :items="states"
+                        @change="getCities"
+                        item-text="name"
+                        item-value="id"
                         rounded
                         dense
                         required
-                    ></v-select>
+                    >
+                </v-select>
 
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -96,6 +101,9 @@
                     <v-select
                         v-model="form.city"
                         label="Selecciona una ciudad"
+                        :items="cities"
+                        item-text="name"
+                        item-value="id"
                         solo
                         rounded
                         dense
@@ -113,6 +121,7 @@
                     <v-btn
                         rounded
                         color="indigo"
+                        @click="updateEmployee"
                         dark
                     >
                         Guardar
@@ -131,29 +140,36 @@ import axios from "axios";
 
 export default {
     name: 'UserModal',
-    props: ['visibleModal', 'data'],
+    props: ['visibleModal', 'data', 'states'],
     data () {
         return {
             valid: true,
             form: {
-                name: this.data,
+                id: this.data,
+                name: '',
                 lastName: '',
                 document: '',
                 address: '',
                 phone: '',
-                department: null,
-                city: null,
+                department: '22',
+                city: '',
             },
-            employee: []
+            employee: [],
+            cities: null,
+
         }
 
     },
     created () {
         
     },
+    mounted () {
+        
+    },
     computed: {
         show: {
             get () {
+                this.getEmployee()
                 return this.visibleModal
             },
             set (value) {
@@ -161,23 +177,59 @@ export default {
                     this.$emit('close')
                 }
             }
-        }
+        },
+    
     },
     methods: {
+    
         async getEmployee () {
             
             const response = await axios.get('http://127.0.0.1:8000/api/employees/' + this.data);
-
-            this.employee = response.data;
-           
+      
+            this.employee = response.data; 
+   
             this.setForm();
+        },
+    /*     async getStates () {
+            try {
+                
+              await axios
+                .get('http://127.0.0.1:8000/api/states')
+                .then(response => (
+                    this.states = response.data 
+                     
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
+        }, */
+        getCities (id) {
+            try {
+              
+                this.form.department = id
+                axios
+                .post('http://127.0.0.1:8000/api/cities', { state_id: this.form.department })
+                .then(response => (
+                    this.cities = response.data  
+                ))
+
+                
+            } catch (error) {
+                console.log(error)
+            }
+
         },
 
         async updateEmployee() {
             try {
 
-                await axios.put('http://127.0.0.1:8000/api/employees', this.form);
-                //  console.log(response)
+                const response = await axios.post('http://127.0.0.1:8000/api/employees/edit', this.form);
+                if(response.status == 200) {
+                    this.show = false
+                    
+                }
 
             } catch (error) {
                  console.log(error)
@@ -188,17 +240,32 @@ export default {
             if (this.employee) {
                 this.form.document = this.employee.document;
                 this.form.name = this.employee.name;
-                this.form.lastName = this.employee.lastName;
+                this.form.lastName = this.employee.last_name;
                 this.form.address = this.employee.address;
                 this.form.phone = this.employee.phone;
-                this.form.city = this.employee.city;
-                this.form.department = this.employee.department;
+                this.form.department = this.employee.states_id;
+                this.department = this.employee.states_id;
+                this.form.city = this.employee.city_id;
 
-               
             } else {
-                console.log("asas")
+                
+                this.clearForm()
             }
         },
+        clearForm () {
+
+            this.employee = null
+            this.form = {
+                id: null,
+                name: '',
+                lastName: '',
+                document: '',
+                address: '',
+                phone: '',
+                department: '',
+                city: '',
+            }
+        }
     }
 }
 </script>

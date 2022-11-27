@@ -55,7 +55,6 @@ class EmployeeController extends Controller
     
             $employee = Employee::create(
                 [
-
                     'name' => $request->name,
                     'last_name' => $request->lastName,
                     'document' => $request->document,
@@ -111,9 +110,20 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request)
     {
-        $employee->update($request->all());
+\Log::info($request);
+
+        $employee = Employee::where('id', $request->id)
+                ->update([
+                    'name' => $request->name,
+                    'last_name' => $request->lastName,
+                    'document' => $request->document,
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'states_id' => $request->department,
+                    'city_id' => $request->city
+                ]);
 
         return response()->json(['employeee actualizado', $employee]);
     }
