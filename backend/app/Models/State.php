@@ -15,8 +15,7 @@ class State extends Model
         'code',
     ];
 
-
-    public function position()
+    public function cities()
     {
         return $this->hasMany(City::class, 'state_id');
     }

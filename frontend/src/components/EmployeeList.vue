@@ -26,7 +26,7 @@
         </div>
        
         <v-card class="ml-8 mr-8 mb-6">
-            <v-card-title>
+          <v-card-title>
             <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -34,29 +34,37 @@
                 single-line
                 hide-details
             ></v-text-field>
-            </v-card-title>
-            <v-data-table
-                :headers="headers"
-                :items="desserts"
-                :search="search"
-            >
+          </v-card-title>
+          <v-data-table
+              :headers="headers"
+              :items="employees"
+              :search="search"
+          >
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon
-                    class="mr-2"
-                    color="indigo"
-                    @click.stop="showModalEdit = true"
+                  class="mr-2"
+                  color="indigo"
+                  @click="editEmployee(item)"
                 >
-                    mdi-pencil-outline
+                  mdi-pencil-outline
                 </v-icon>
                 <v-icon
-                    color="indigo"
-                    @click="deleteItem(item)"
+                  color="indigo"
+                  @click="deleteItem(item)"
                 >
-                    mdi-delete-outline
+                  mdi-delete-outline
                 </v-icon>
             </template>
+
+            <template v-slot:[`item.states_id`]="{ item }">
+              {{ item.state.name}}
+            </template>
+
+            <template v-slot:[`item.city_id`]="{ item }"> 
+              {{ item.city.name}}
+            </template>
         
-            </v-data-table>
+          </v-data-table>
         </v-card>
         <v-dialog v-model="dialogDelete" max-width="400px">
           <v-card class="text-center">
@@ -88,11 +96,16 @@
         </v-dialog>
         
         <UserModal :visible="show" @close="show=false" />
-        <EditEmployee :visible-modal="showModalEdit" @close="showModalEdit = false" />
+
+        <template v-if="ready">
+          <EditEmployee :visible-modal="showModalEdit" :data="employee" @close="showModalEdit = false" />
+        </template>
+     
     </div>
 </template>
 
 <script>
+import axios from "axios";
 
 import EditEmployee from './EditEmployee.vue';
 import UserModal from './User'
@@ -111,6 +124,9 @@ import UserModal from './User'
         showModalEdit: false,
         dialog: false,
         dialogDelete: false,
+        employees: [],
+        ready: false,
+        employee: null,
        /*  singleSelect: false,
         selected: [], */
         headers: [
@@ -121,57 +137,18 @@ import UserModal from './User'
             sortable: false,
             value: 'name',
           },
-          { text: 'Identificación', value: 'calories' },
-          { text: 'Dirección', value: 'fat' },
-          { text: 'Teléfono', value: 'carbs' },
-          { text: 'Departamento', value: 'protein' },
-          { text: 'Ciudad', value: 'iron' },
+          { text: 'Identificación', value: 'document' },
+          { text: 'Dirección', value: 'address' },
+          { text: 'Teléfono', value: 'phone' },
+          { text: 'Departamento', value: 'states_id' },
+          { text: 'Ciudad', value: 'city_id' },
           { text: 'Acciones', value: 'actions', sortable: false},
         ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-        
-        ],
+       
       }
+    },
+    created () {
+      this.getEmployees()
     },
     watch: {
       dialog (val) {
@@ -182,6 +159,30 @@ import UserModal from './User'
       },
     },
     methods: {
+
+      async getEmployees () {
+          try {
+              
+            await axios
+              .get('http://127.0.0.1:8000/api/employees')
+              .then((response) => {
+                this.employees = response.data 
+                this.ready = true
+                      
+          })
+              
+          } catch (error) {
+              console.log(error)
+          }
+
+      },
+      editEmployee(item)
+      {
+        this.showModalEdit = true
+        this.employee = item.id 
+        this.ready = true
+
+      },
       deleteItem (item) {
         this.editedIndex = this.desserts.indexOf(item)
         this.editedItem = Object.assign({}, item)

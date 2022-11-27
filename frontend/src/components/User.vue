@@ -160,7 +160,6 @@
     
 <script>
 import axios from "axios";
-
 export default {
     name: 'UserModal',
     props: ['visible'],
@@ -203,14 +202,20 @@ export default {
             try {
                
                 axios
-                .post('http://127.0.0.1:8000/api/employees', this.form, {
-                headers: {
-                        // remove headers
-                    }
+                .post('http://127.0.0.1:8000/api/employees', this.form)
+                .then((response) => {
+                    
+                    if(response.status == 200) {
+                        this.show = false
+                    
+                    }/* else {
+                        
+                        this.$toast.error( "No se pudo crear el usuario. Por favor, intente mas tarde.");
+                    } */
                 })
-                .then(response => (this.info = response.data.bpi))
                 
             } catch (error) {
+
                 console.log(error)
             }
         },
@@ -233,7 +238,6 @@ export default {
             try {
               
                 this.form.department = id
-                
                 axios
                 .post('http://127.0.0.1:8000/api/cities', { state_id: this.form.department })
                 .then(response => (

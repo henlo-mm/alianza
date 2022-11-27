@@ -25,4 +25,14 @@ class Employee extends Model
     {
         return $this->hasMany(PositionEmployee::class, 'employee_id');
     }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'states_id');
+    }
+    
 }
