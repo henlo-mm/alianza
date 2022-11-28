@@ -199,7 +199,7 @@ export default {
             try {
                
                 axios
-                .post('http://127.0.0.1:8000/api/positions_employee', this.form)
+                .post(this.$baseUrl + 'positions_employee', this.form)
                 .then((response) => {
                     
                     if(response.status == 200) {
@@ -221,7 +221,7 @@ export default {
             try {
                 
               await axios
-                .get('http://127.0.0.1:8000/api/roles')
+                .get(this.$baseUrl + 'roles')
                 .then(response => (
                     this.roles = response.data 
                      
@@ -236,7 +236,7 @@ export default {
             try {
                 
               await axios
-                .get('http://127.0.0.1:8000/api/employees_position')
+                .get(this.$baseUrl + 'employees_position')
                 .then(response => (
                     this.employees = response.data  
                 ))
@@ -250,7 +250,7 @@ export default {
             try {
               
                 axios
-                .get('http://127.0.0.1:8000/api/positions')
+                .get(this.$baseUrl + 'positions')
                 .then(response => (
                     this.positions = response.data  
                 ))

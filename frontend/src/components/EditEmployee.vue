@@ -185,33 +185,19 @@ export default {
     
         async getEmployee () {
             
-            const response = await axios.get('http://127.0.0.1:8000/api/employees/' + this.data);
+            const response = await axios.get(this.$baseUrl + 'employees/' + this.data);
       
             this.employee = response.data; 
    
             this.setForm();
         },
-    /*     async getStates () {
-            try {
-                
-              await axios
-                .get('http://127.0.0.1:8000/api/states')
-                .then(response => (
-                    this.states = response.data 
-                     
-                ))
-                
-            } catch (error) {
-                console.log(error)
-            }
 
-        }, */
         getCities (id) {
             try {
               
                 this.form.department = id
                 axios
-                .post('http://127.0.0.1:8000/api/cities', { state_id: this.form.department })
+                .post(this.$baseUrl + 'cities', { state_id: this.form.department })
                 .then(response => (
                     this.cities = response.data  
                 ))
@@ -226,7 +212,7 @@ export default {
         async updateEmployee() {
             try {
 
-                const response = await axios.post('http://127.0.0.1:8000/api/employees/edit', this.form);
+                const response = await axios.post(this.$baseUrl + 'employees/edit', this.form);
                 if(response.status == 200) {
                     this.$emit('update', response.data)
                     this.show = false

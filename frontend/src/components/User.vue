@@ -182,8 +182,6 @@ export default {
 
     },
     created () {
-        console.log(this.$parent)
-
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
         this.getStates()
         
@@ -206,7 +204,7 @@ export default {
             try {
                
                 axios
-                .post('http://127.0.0.1:8000/api/employees', this.form)
+                .post(this.$baseUrl + 'employees', this.form)
                 .then((response) => {
                     
                     if(response.status == 200) {
@@ -229,7 +227,7 @@ export default {
             try {
                 
               await axios
-                .get('http://127.0.0.1:8000/api/states')
+                .get(this.$baseUrl + 'states')
                 .then(response => (
                     this.states = response.data 
                      
@@ -245,7 +243,7 @@ export default {
               
                 this.form.department = id
                 axios
-                .post('http://127.0.0.1:8000/api/cities', { state_id: this.form.department })
+                .post(this.$baseUrl + 'cities', { state_id: this.form.department })
                 .then(response => (
                     this.cities = response.data  
                 ))

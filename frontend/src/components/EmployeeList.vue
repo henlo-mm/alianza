@@ -190,7 +190,7 @@ import UserModal from './User'
           try {
               
             await axios
-              .get('http://127.0.0.1:8000/api/employees')
+              .get(this.$baseUrl + 'employees')
               .then((response) => {
                 console.log(response.data)
                 this.employees = response.data 
@@ -210,7 +210,7 @@ import UserModal from './User'
           try {
               
             await axios
-              .get('http://127.0.0.1:8000/api/states')
+              .get(this.$baseUrl + 'states')
               .then(response => (
                   this.states = response.data 
                     
@@ -237,7 +237,7 @@ import UserModal from './User'
       deleteItemConfirm () {
        
         axios
-          .delete('http://127.0.0.1:8000/api/employees/delete/'+ this.index )
+          .delete(this.$baseUrl + 'delete/' + this.index )
             .then((response) => {
               this.getEmployees()
               console.log(response)

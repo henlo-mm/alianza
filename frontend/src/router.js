@@ -28,6 +28,7 @@ function guardMyroute(to, from, next)
       next('/');
     }
 }
+Vue.prototype.$baseUrl = 'http://127.0.0.1:8000/api/';
 
 export default new Router({
   mode: 'history',

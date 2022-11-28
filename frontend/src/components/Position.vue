@@ -186,7 +186,7 @@ import PositionModal from './PositionModal'
           try {
               
             await axios
-              .get('http://127.0.0.1:8000/api/positions_employee')
+              .get(this.$baseUrl + 'positions_employee')
               .then((response) => {
               this.position_employee = response.data 
                       
@@ -213,7 +213,7 @@ import PositionModal from './PositionModal'
       deleteItemConfirm () {
        
         axios
-          .delete('http://127.0.0.1:8000/api/positions_employee/delete/'+ this.index )
+          .delete(this.$baseUrl + 'positions_employee/delete/'+ this.index )
             .then((response) => {
               console.log(response)
         })

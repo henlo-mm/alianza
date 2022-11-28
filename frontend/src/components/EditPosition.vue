@@ -185,13 +185,6 @@ export default {
                 }
             }
         },
-   /*      employeesOptions () {
-            this.data.forEach(element => {
-                console.log(element.employee)
-                
-            });
-            return this.data.employee.map(item => ({ value: item.id, text: item.name }));
-        }, */
     },
     created () {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
@@ -202,7 +195,7 @@ export default {
     methods: {
         async getPositionEmployee () {
            
-            const response = await axios.get('http://127.0.0.1:8000/api/positions_employee/' + this.pos);
+            const response = await axios.get(this.$baseUrl + 'positions_employee/' + this.pos);
       
             this.position = response.data; 
    
@@ -212,7 +205,7 @@ export default {
             try {
                 
               await axios
-                .get('http://127.0.0.1:8000/api/roles')
+                .get(this.$baseUrl + 'roles')
                 .then(response => (
                     this.roles = response.data 
                      
@@ -227,7 +220,7 @@ export default {
             try {
                 
               await axios
-                .get('http://127.0.0.1:8000/api/employees_position')
+                .get(this.$baseUrl + 'employees_position')
                 .then(response => (
                     this.employees = response.data  
                 ))
@@ -241,7 +234,7 @@ export default {
             try {
               
                 axios
-                .get('http://127.0.0.1:8000/api/positions')
+                .get(this.$baseUrl +'positions')
                 .then(response => (
                     this.positions = response.data  
                 ))
@@ -255,7 +248,7 @@ export default {
         async updatePositionEmployee() {
             try {
 
-                const response = await axios.post('http://127.0.0.1:8000/api/positions_employee/edit', this.form);
+                const response = await axios.post(this.$baseUrl + 'positions_employee/edit', this.form);
                 if(response.status == 200) {
                     this.$emit('update', response.data)
                     this.show = false
