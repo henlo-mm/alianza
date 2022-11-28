@@ -100,9 +100,16 @@
           </v-data-table>
         </v-card>
         
-        <UserModal :visible="show" @close="show=false" />
+        <UserModal :visible="show" @close="show=false" @update="updateList" />
         
-        <EditEmployee :visible-modal="showModalEdit" v-if="employee" :states="states" :data="employee" @close="showModalEdit = false" />
+        <EditEmployee 
+          :visible-modal="showModalEdit" 
+          v-if="employee" 
+          :states="states" 
+          :data="employee" 
+          @close="showModalEdit = false"
+          @update="updateData"
+        />
         
      
     </div>
@@ -134,6 +141,7 @@ import UserModal from './User'
         states: [],
         editedIndex: null,
         token: localStorage.getItem('token'),
+        id: null,
        /*  singleSelect: false,
         selected: [], */
         headers: [
@@ -171,6 +179,12 @@ import UserModal from './User'
       },
     },
     methods: {
+      updateList () {
+        this.getEmployees()  
+      },
+      updateData () {
+        this.getEmployees()
+      },
 
       async getEmployees () {
           try {
@@ -178,6 +192,7 @@ import UserModal from './User'
             await axios
               .get('http://127.0.0.1:8000/api/employees')
               .then((response) => {
+                console.log(response.data)
                 this.employees = response.data 
                       
           })
@@ -224,17 +239,14 @@ import UserModal from './User'
         axios
           .delete('http://127.0.0.1:8000/api/employees/delete/'+ this.index )
             .then((response) => {
-              this.employees.splice(this.index, 1)
+              this.getEmployees()
               console.log(response)
         })
         this.closeDelete()
       },
       closeDelete () {
         this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        
       },
     }
   }

@@ -64,7 +64,7 @@ class EmployeeController extends Controller
                 ]
             );
     
-            return response()->json(['employeee agregado', $employee]);
+            return response()->json([$employee]);
 
         } catch (\Throwable $th) {
             DB::rollBack();

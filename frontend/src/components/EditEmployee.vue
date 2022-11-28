@@ -228,6 +228,7 @@ export default {
 
                 const response = await axios.post('http://127.0.0.1:8000/api/employees/edit', this.form);
                 if(response.status == 200) {
+                    this.$emit('update', response.data)
                     this.show = false
                     
                 }

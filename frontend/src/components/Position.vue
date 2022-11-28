@@ -109,12 +109,13 @@
             </v-data-table>
         </v-card>
         
-        <PositionModal :visible="show" @close="show=false" />
+        <PositionModal :visible="show" @close="show=false" @update="updateList" />
         <EditPosition 
           :visible-modal="showModalEdit" 
           v-if="position && position_employee"  
           :pos="position" 
-          :data="position_employee" 
+          :data="position_employee"
+          @update="updateData"
           @close="showModalEdit=false" 
         />
     </div>
@@ -175,7 +176,12 @@ import PositionModal from './PositionModal'
       },
     },
     methods: {
-      
+      updateList() {
+        this.getPositionEmployee()
+      },
+      updateData () {
+        this.getPositionEmployee()
+      },
       async getPositionEmployee () {
           try {
               
@@ -209,18 +215,13 @@ import PositionModal from './PositionModal'
         axios
           .delete('http://127.0.0.1:8000/api/positions_employee/delete/'+ this.index )
             .then((response) => {
-              this.position_employee.splice(this.index, 1)
-          
               console.log(response)
         })
         this.closeDelete()
       },
       closeDelete () {
         this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        this.getPositionEmployee()
       },
     }
   }

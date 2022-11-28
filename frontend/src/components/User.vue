@@ -182,6 +182,8 @@ export default {
 
     },
     created () {
+        console.log(this.$parent)
+
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
         this.getStates()
         
@@ -208,6 +210,8 @@ export default {
                 .then((response) => {
                     
                     if(response.status == 200) {
+                        this.$emit('update', response.data)
+            
                         this.show = false
                     
                     }/* else {

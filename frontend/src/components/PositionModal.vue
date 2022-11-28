@@ -203,6 +203,7 @@ export default {
                 .then((response) => {
                     
                     if(response.status == 200) {
+                        this.$emit('update', response.data)
                         this.show = false
                     
                     }/* else {
