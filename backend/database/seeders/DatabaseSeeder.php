@@ -25,5 +25,10 @@ class DatabaseSeeder extends Seeder
         \DB::unprepared(
             file_get_contents($cities_path)
         );
+
+        $this->call([
+            RolSeeder::class,
+            PositionSeeder::class,
+        ]);
     }
 }

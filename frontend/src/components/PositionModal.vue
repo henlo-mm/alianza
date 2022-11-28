@@ -22,14 +22,17 @@
                 
             >
                 <label for="" class="font-weight-medium">Nombres</label>
-                 <v-text-field
-                     v-model="name"
-                     label="Buscar un enmpleado"
-                     solo
-                     rounded
-                     dense
-                     required
-                 ></v-text-field>
+                 <v-select
+                    v-model="form.name"
+                    label="Buscar un empleado"
+                    :items="employees"
+                    item-text="name"
+                    item-value="id"
+                    solo
+                    rounded
+                    dense
+                    required
+                 ></v-select>
              
             </v-col>
 
@@ -39,7 +42,7 @@
             >
                 <label for="" class="font-weight-medium">Identificación</label>
                 <v-text-field
-                    v-model="document"
+                    v-model="form.document"
                     label="Escribe un número de identificación"
                     solo
                     rounded
@@ -55,7 +58,7 @@
                 <label for="" class="font-weight-medium">Área</label>
 
                 <v-text-field
-                    v-model="area"
+                    v-model="form.area"
                     label="Ingrese el área"
                     solo
                     rounded
@@ -69,14 +72,17 @@
                 sm="6"
             >
                 <label for="" class="font-weight-medium">Cargo</label>
-                <v-text-field
-                    v-model="position"
+                <v-select
+                    v-model="form.position"
                     label="Ingrese el cargo"
+                    :items="positions"
+                    item-text="name"
+                    item-value="id"
                     solo
                     rounded
                     dense
                     required
-                ></v-text-field>
+                ></v-select>
 
             </v-col>
             <v-col
@@ -85,7 +91,10 @@
             >
                 <label for=""  class="font-weight-medium">Rol</label>
                 <v-select
-                    v-model="role"
+                    v-model="form.role"
+                    :items="roles"
+                    item-text="name"
+                    item-value="id"
                     label="Seleccione el rol del empleado"
                     solo
                     rounded
@@ -99,14 +108,17 @@
                 sm="6"
             >
                 <label for="chief" class="font-weight-medium">Jefe</label>
-                <v-text-field
-                    v-model="chief"
+                <v-select
+                    v-model="form.chief"
                     label="Ingrese el nombre"
+                    :items="employees"
+                    item-text="name"
+                    item-value="id"
                     solo
                     rounded
                     dense
                     required
-                ></v-text-field>
+                ></v-select>
             </v-col>
             <v-col
                 cols="12"
@@ -124,6 +136,7 @@
                     rounded
                     color="indigo"
                     dark
+                    @click="storePositionEmployee"
                 >
                     Guardar
                 </v-btn>
@@ -136,21 +149,35 @@
 </template>
     
 <script>
+
+import axios from "axios";
+
 export default {
     name: 'PositionModal',
     props: ['visible'],
     data () {
         return {
             valid: true,
-            name: '',
-            document: '',
-            area: '',
-            position: '',
-            role: null,
-            chief: null,
+            form: {
+                name: '',
+                document: '',
+                area: '',
+                position: '',
+                role: null,
+                chief: null
+            },
+            positions: [],
+            employees: [],
+            roles: []
            
         }
 
+    },
+    created () {
+      this.getRoles()
+      this.getEmployees()
+      this.getPositions()
+        
     },
     computed: {
         show: {
@@ -162,6 +189,73 @@ export default {
                     this.$emit('close')
                 }
             }
+        },
+   
+    },
+    methods: {
+        storePositionEmployee () {
+            try {
+               
+                axios
+                .post('http://127.0.0.1:8000/api/positions_employee', this.form)
+                .then((response) => {
+                    
+                    if(response.status == 200) {
+                        this.show = false
+                    
+                    }/* else {
+                        
+                        this.$toast.error( "No se pudo crear el usuario. Por favor, intente mas tarde.");
+                    } */
+                })
+                
+            } catch (error) {
+
+                console.log(error)
+            }
+        },
+        async getRoles () {
+            try {
+                
+              await axios
+                .get('http://127.0.0.1:8000/api/roles')
+                .then(response => (
+                    this.roles = response.data 
+                     
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
+        },
+        async getEmployees () {
+            try {
+                
+              await axios
+                .get('http://127.0.0.1:8000/api/employees_position')
+                .then(response => (
+                    this.employees = response.data  
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
+        },
+        getPositions () {
+            try {
+              
+                axios
+                .get('http://127.0.0.1:8000/api/positions')
+                .then(response => (
+                    this.positions = response.data  
+                ))
+                
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 }

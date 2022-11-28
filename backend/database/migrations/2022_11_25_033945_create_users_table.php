@@ -20,8 +20,6 @@ class CreateUsersTable extends Migration
             $table->string('document');
             $table->string('address');
             $table->string('phone');
-            $table->unsignedBigInteger('rol_id')->nullable();;
-            $table->foreign('rol_id')->references('id')->on('roles');
             $table->unsignedBigInteger('states_id')->nullable();;
             $table->foreign('states_id')->references('id')->on('states');
             $table->unsignedBigInteger('city_id')->nullable();;

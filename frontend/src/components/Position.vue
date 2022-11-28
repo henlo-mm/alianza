@@ -7,7 +7,7 @@
             </v-btn>
             <h1 class="font-weight-regular">Cargos</h1>
         </div>
-       <div class="d-flex align-start mb-6 ml-8">
+        <div class="d-flex align-start mb-6 ml-8">
             <v-btn rounded text color="indigo" style="text-transform: none;">
                 <v-icon> mdi-delete-outline</v-icon>
                 Borrar selección
@@ -28,78 +28,100 @@
        
         <v-card class="mr-8 ml-8 mb-8">
             <v-card-title>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Buscar"
-                single-line
-                hide-details
-            ></v-text-field>
+              <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Buscar"
+                  single-line
+                  hide-details
+              ></v-text-field>
             </v-card-title>
             <v-data-table
-              
                 :headers="headers"
-                :items="desserts"
+                :items="position_employee"
                 :search="search"
             >
-              <!-- v-model="selected"
-                :single-select="singleSelect"
-                item-key="name"
-                show-select -->
-            <template v-slot:[`item.actions`]="{ item }">
-                <v-icon
+             
+              <template v-slot:[`item.rol_id`]="{ item }">
+                {{ item.rol.name}}
+              </template>
+
+              <template v-slot:[`item.position_id`]="{ item }"> 
+                {{ item.position.name}}
+              </template>
+
+              <template v-slot:[`item.employee_id`]="{ item }"> 
+                {{ item.employee.name}}
+              </template>
+              <template v-slot:[`item.chief_id`]="{ item }"> 
+                {{ item.employee.name}}
+              </template>
+
+              <template v-slot:top>
+                <v-dialog v-model="dialogDelete" max-width="350px">
+                  <v-card class="text-center">
+                      <v-icon
+                        class="mt-6"
+                        color="indigo"
+                        large
+                      >
+                          mdi-delete-outline
+                      </v-icon>
                     
-                    class="mr-2"
-                    color="indigo"
-                    @click.stop="showModalEdit = true"
-                >
-                    mdi-pencil-outline
-                </v-icon>
-                <v-icon
-                   
-                    color="indigo"
-                    @click="deleteItem(item)"
-                >
-                    mdi-delete-outline
-                </v-icon>
-            </template>
+                      <h2 class="font-weight-medium mt-4">Borrar cargo</h2>
+                      <h5 class="font-weight-regular mt-6">¿Está seguro de borrar el cargo de <span class="font-weight-medium">{{ position_item.name}}</span>?</h5>
+                      
+                      <v-card-actions class="mt-4">
+                        <v-spacer></v-spacer>
+                      
+                          <v-btn rounded  @click="closeDelete" small>
+                              Cancelar
+                          </v-btn>
+                          
+                          <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
+                              Aceptar
+                          </v-btn>
+                      
+                        <v-spacer></v-spacer>
+                      
+                      </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </template>
+
+              <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon
+                      class="mr-2"
+                      color="indigo"
+                      @click="editPositionEmployee(item)"
+                  >
+                      mdi-pencil-outline
+                  </v-icon>
+                  <v-icon
+                      color="indigo"
+                      @click="deleteItem(item)"
+                  >
+                      mdi-delete-outline
+                  </v-icon>
+                  
+              </template>
+             
             </v-data-table>
         </v-card>
-        <v-dialog v-model="dialogDelete" max-width="300px">
-          <v-card>
-            <v-icon
-                class="mt-10"
-                color="indigo"
-                large
-              >
-                  mdi-delete-outline
-              </v-icon>
-              <h2 class="font-weight-medium mt-4">Borrar cargo</h2>
-              <h5 class="mt-6">¿Está seguro de borrar este cargo?</h5>
-              
-              <v-card-actions>
-                <v-spacer></v-spacer>
-               
-                  <v-btn rounded  @click="closeDelete" small>
-                      Cancelar
-                  </v-btn>
-                  
-                  <v-btn rounded color="indigo" dark @click="deleteItemConfirm" small>
-                      Aceptar
-                  </v-btn>
-               
-                <v-spacer></v-spacer>
-              
-              </v-card-actions>
-          </v-card>
-        </v-dialog>
+        
         <PositionModal :visible="show" @close="show=false" />
-        <EditPosition :visible-modal="showModalEdit" @close="showModalEdit=false" />
+        <EditPosition 
+          :visible-modal="showModalEdit" 
+          v-if="position && position_employee"  
+          :pos="position" 
+          :data="position_employee" 
+          @close="showModalEdit=false" 
+        />
     </div>
 </template>
 
 <script>
-
+import axios from "axios";
 import EditPosition from './EditPosition'
 import PositionModal from './PositionModal'
   export default {
@@ -117,40 +139,30 @@ import PositionModal from './PositionModal'
         showModalEdit: false,
         dialog: false,
         dialogDelete: false,
+        position_employee: [],
+        position: null,
+        index: null,
+        position_item: {},
         headers: [
           {
             text: 'Nombre',
             align: 'start',
             sortable: false,
-            value: 'name',
+            value: 'employee_id',
           },
-          { text: 'Identificación', value: 'calories' },
-          { text: 'Área', value: 'fat' },
-          { text: 'Cargo', value: 'carbs' },
-          { text: 'Rol', value: 'protein' },
-          { text: 'Jefe', value: 'iron' },
+          { text: 'Identificación', value: 'document' },
+          { text: 'Área', value: 'area' },
+          { text: 'Cargo', value: 'position_id' },
+          { text: 'Rol', value: 'rol_id' },
+          { text: 'Jefe', value: 'chief_id' },
           { text: 'Acciones', value: 'actions', sortable: false },
         ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-          },
-          
-        ],
+        
       }
+    },
+    created () {
+      this.getPositionEmployee()
+
     },
     watch: {
       dialog (val) {
@@ -161,13 +173,44 @@ import PositionModal from './PositionModal'
       },
     },
     methods: {
+      
+      async getPositionEmployee () {
+          try {
+              
+            await axios
+              .get('http://127.0.0.1:8000/api/positions_employee')
+              .then((response) => {
+              this.position_employee = response.data 
+                      
+          })
+              
+          } catch (error) {
+              console.log(error)
+          }
+
+      },
+      editPositionEmployee(item)
+      {
+        this.showModalEdit = true
+        this.position = item.id 
+
+      },
       deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        
+        this.index = item.id
+        this.position_item = item.position
+
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
+       
+        axios
+          .delete('http://127.0.0.1:8000/api/positions_employee/delete/'+ this.index )
+            .then((response) => {
+              this.position_employee.splice(this.index, 1)
+          
+              console.log(response)
+        })
         this.closeDelete()
       },
       closeDelete () {

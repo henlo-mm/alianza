@@ -58,11 +58,11 @@
             </template>
 
             <template v-slot:[`item.states_id`]="{ item }">
-              {{ item.state.name}}
+              {{ item.state.name }}
             </template>
 
-            <template v-slot:[`item.city_id`]="{ item }"> 
-              {{ item.city.name}}
+            <template v-slot:[`item.city_id`]="{ item }" > 
+              {{ item.city.name }}
             </template>
             <template v-slot:top>
 
@@ -76,10 +76,10 @@
                         mdi-delete-outline
                     </v-icon>
                   
-                    <h2 class="font-weight-medium mt-4">Borrar empleado</h2>
-                    <h5 class="font-weight-regular mt-6">¿Está seguro de borrar a <span class="font-weight-medium">{{ item.name}}</span>?</h5>
+                    <h2 class="font-weight-medium mt-2">Borrar empleado</h2>
+                    <h5 class="font-weight-regular mt-6">¿Está seguro de borrar a <span class="font-weight-medium">{{ data.name}}</span>?</h5>
                     
-                    <v-card-actions class="mt-4">
+                    <v-card-actions>
                       <v-spacer></v-spacer>
                      
                         <v-btn rounded  @click="closeDelete" small>
@@ -128,7 +128,7 @@ import UserModal from './User'
         showModalEdit: false,
         dialog: false,
         dialogDelete: false,
-        item: {},
+        data: {},
         employees: [],
         employee: null,
         states: [],
@@ -154,12 +154,11 @@ import UserModal from './User'
       }
     },
     created () {
-      
-      
       this.getStates()
+      this.getEmployees()
     },
     mounted() {
-      this.getEmployees()
+      
     },
     watch: {
       dialog (val) {
@@ -178,6 +177,7 @@ import UserModal from './User'
               .get('http://127.0.0.1:8000/api/employees')
               .then((response) => {
                 this.employees = response.data 
+           console.log(this.employees)
                       
           })
               
@@ -210,7 +210,7 @@ import UserModal from './User'
       deleteItem (item) {
         
         this.index = item.id
-        this.item = item
+        this.data = item
 
         this.dialogDelete = true
       },
@@ -220,7 +220,6 @@ import UserModal from './User'
           .delete('http://127.0.0.1:8000/api/employees/delete/'+ this.index )
             .then((response) => {
               this.employees.splice(this.index, 1)
-              console.log(this.employees)
               console.log(response)
         })
         this.closeDelete()

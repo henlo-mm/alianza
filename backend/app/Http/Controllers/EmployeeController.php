@@ -64,8 +64,6 @@ class EmployeeController extends Controller
                     'city_id' => $request->city
                 ]
             );
-
-            \Log::info($employee);
     
             return response()->json(['employeee agregado', $employee]);
 
