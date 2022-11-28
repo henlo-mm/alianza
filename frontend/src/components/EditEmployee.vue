@@ -156,12 +156,13 @@ export default {
             },
             employee: [],
             cities: null,
+            token: localStorage.getItem('token'),
 
         }
 
     },
     created () {
-        
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
     },
     mounted () {
         

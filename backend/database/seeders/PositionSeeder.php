@@ -14,10 +14,10 @@ class PositionSeeder extends Seeder
     public function run()
     {
         DB::table('positions')->insert([
-            ['id' => 1, 'name' => 'Director'],
-            ['id' => 2, 'name' => 'Diseñador Gráfico'],
-            ['id' => 3, 'name' => 'Realizador Audiovisual'],
-            ['id' => 4, 'name' => 'Community Manager'],
+            ['name' => 'Director'],
+            ['name' => 'Diseñador Gráfico'],
+            ['name' => 'Realizador Audiovisual'],
+            ['name' => 'Community Manager'],
         ]);
     }
 }

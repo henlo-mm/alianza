@@ -45,6 +45,7 @@
 
               <v-text-field
                 class="mt-4"
+                v-model="form.email"
                 label="Ingresa tu nombre de usuario"
                 solo
                 rounded
@@ -53,6 +54,7 @@
 
               <label for="" >Contraseña</label>
               <v-text-field
+                v-model="form.password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 class="mt-4"
                 label="Ingresa tu contraseña"
@@ -75,8 +77,9 @@
                   block
                   color="indigo"
                   dark
-                  type="submit"
+                 
                   rounded
+                  @click="login"
                   dense
                   >Iniciar sesión</v-btn>
               </div>
@@ -99,7 +102,7 @@
 
 <script>
 
-
+import axios from "axios";
 export default {
   name: 'LoginUser',
 
@@ -110,9 +113,36 @@ export default {
   data () {
     return {
       show: false,
-      checkbox: false
+      checkbox: false,
+      form: {
+        email: null,
+        password: null
+      }
     }
   },
+  created () {
+
+  },
+  methods: {
+
+    async login () {
+      try {
+              
+        await axios
+          .post('http://127.0.0.1:8000/api/login', this.form)
+          .then((response) => {
+            console.log(response)
+            localStorage.setItem('token', response.data.access_token);
+            this.$router.push("/dashboard"); 
+        })
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    
+  }
 };
 </script>
 

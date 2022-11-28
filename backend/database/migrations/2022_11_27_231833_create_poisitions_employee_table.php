@@ -16,7 +16,7 @@ class CreatePoisitionsEmployeeTable extends Migration
         Schema::create('poisitions_employee', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('employee_id')->unsigned()->nullable();
-            $table->foreign('employee_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('SET NULL')->onUpdate('cascade');
             $table->string('document');
             $table->string('area');
             $table->bigInteger('position_id')->unsigned()->nullable();;
@@ -24,7 +24,7 @@ class CreatePoisitionsEmployeeTable extends Migration
             $table->unsignedBigInteger('rol_id')->nullable();;
             $table->foreign('rol_id')->references('id')->on('roles');
             $table->bigInteger('chief_id')->unsigned()->nullable();
-            $table->foreign('chief_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('chief_id')->references('id')->on('employees')->onDelete('SET NULL')->onUpdate('cascade');
             $table->timestamps();
         });
     }

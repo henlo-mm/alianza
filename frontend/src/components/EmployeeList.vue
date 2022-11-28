@@ -133,6 +133,7 @@ import UserModal from './User'
         employee: null,
         states: [],
         editedIndex: null,
+        token: localStorage.getItem('token'),
        /*  singleSelect: false,
         selected: [], */
         headers: [
@@ -154,6 +155,7 @@ import UserModal from './User'
       }
     },
     created () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       this.getStates()
       this.getEmployees()
     },
@@ -177,11 +179,14 @@ import UserModal from './User'
               .get('http://127.0.0.1:8000/api/employees')
               .then((response) => {
                 this.employees = response.data 
-           console.log(this.employees)
                       
           })
               
           } catch (error) {
+            if (error.response.status === 401) {
+                 localStorage.removeItem('token')
+                 this.$router.push({ name: 'Login'})
+            }
               console.log(error)
           }
 

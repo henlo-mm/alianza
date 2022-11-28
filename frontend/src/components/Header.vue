@@ -36,6 +36,13 @@
                     >
                         <v-list-item-title>{{ item.title }}</v-list-item-title>
                     </v-list-item>
+                    <v-list-item
+                        class="hover-item"
+                        link
+                        @click="logout()"
+                    >
+                        <v-list-item-title>{{ close.title }}</v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-menu>
 
@@ -83,16 +90,21 @@
 </template>
 
 <script>
-
+import axios from "axios";
 export default {
   name: 'VerticalBar',
   components: {
   
   },
+  created() {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+
+  },
 
   data () {
       return {
         drawer: true,
+        token: localStorage.getItem('token'),
         items: [
             { title: 'Home', icon: 'mdi-home' },
             { 
@@ -107,15 +119,36 @@ export default {
         ],
         subList: [
             { title: 'Perfil'},
-            { title: 'Configuración', route: "/managers" },
+            { title: 'Configuración' },
             { title: 'Soporte' },
-            { title: 'Salir', route: "/managers" },
+           // { title: 'Salir', route: "/logout"},
         ],
+
+        close: {
+            title: "Salir"
+        },
         mini: true,
       }
     },
-};
-
+    methods: {
+        async logout() {
+                
+            try {
+              
+              await axios
+                .post('http://127.0.0.1:8000/api/logout')
+                .then((response) => {
+                    console.log(response)
+                    localStorage.removeItem('token')
+                    this.$router.push("/"); 
+            })
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+  }
 </script>
 
 <style>

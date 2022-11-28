@@ -176,12 +176,14 @@ export default {
                 city: null,
             },
             states: null,
-            cities: null
+            cities: null,
+            token: localStorage.getItem('token'),
         }
 
     },
     created () {
-      this.getStates()
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+        this.getStates()
         
     },
     computed: {

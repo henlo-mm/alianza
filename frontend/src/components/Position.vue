@@ -143,6 +143,7 @@ import PositionModal from './PositionModal'
         position: null,
         index: null,
         position_item: {},
+        token: localStorage.getItem('token'),
         headers: [
           {
             text: 'Nombre',
@@ -161,6 +162,7 @@ import PositionModal from './PositionModal'
       }
     },
     created () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       this.getPositionEmployee()
 
     },

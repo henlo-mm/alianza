@@ -168,15 +168,17 @@ export default {
             },
             positions: [],
             employees: [],
-            roles: []
+            roles: [],
+            token: localStorage.getItem('token'),
            
         }
 
     },
     created () {
-      this.getRoles()
-      this.getEmployees()
-      this.getPositions()
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+        this.getRoles()
+        this.getEmployees()
+        this.getPositions()
         
     },
     computed: {

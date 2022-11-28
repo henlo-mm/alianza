@@ -42,7 +42,6 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         try {
-            \Log::info($request);
           /*   $validator = Validator::make($request->all(),[
                 'name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',

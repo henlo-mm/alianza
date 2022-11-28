@@ -9,18 +9,42 @@ import PositionEmployee from './components/Position.vue'
 
 Vue.use(Router)
 
+
+function guardMyroute(to, from, next)
+{
+    let isAuthenticated = false;
+
+    if(localStorage.getItem('token'))
+      isAuthenticated = true;
+    else
+      isAuthenticated = false;
+
+    if(isAuthenticated) 
+    {
+      next();
+    } 
+    else
+    {
+      next('/');
+    }
+}
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: LoginUser
+      path: "/",
+      name: "home",
+      component: LoginUser,
+      meta: {title: 'Home'},
+
     },
     {
       path: '/dashboard',
       name: 'Dashboard',
+      beforeEnter : guardMyroute,
+      meta: {title: 'Dashboard'},
       component: DashboardMain,
       children: [
         {
@@ -48,4 +72,5 @@ export default new Router({
     },
     
   ]
+  
 })
