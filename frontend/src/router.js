@@ -30,6 +30,8 @@ function guardMyroute(to, from, next)
 }
 Vue.prototype.$baseUrl = 'http://127.0.0.1:8000/api/';
 
+//Vue.prototype.$baseUrl = 'https://shrouded-mesa-45544.herokuapp.com/api/';
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,

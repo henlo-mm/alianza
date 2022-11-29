@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     Route::get('states',[App\Http\Controllers\EmployeeController::class, 'getStates']);
     Route::post('cities',[App\Http\Controllers\EmployeeController::class, 'getCities']);
+    Route::get('auth_user',[App\Http\Controllers\EmployeeController::class, 'getAuthenticatedUser']);
     
     Route::resource('positions_employee', App\Http\Controllers\PositionController::class);
     Route::post('positions_employee/edit',[App\Http\Controllers\PositionController::class, 'update']);

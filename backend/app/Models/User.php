@@ -29,5 +29,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
 
 }

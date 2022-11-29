@@ -13,13 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $states_path = resource_path('database/states.sql');
+        $states_path = resource_path('database/states.psql');
         
         \DB::unprepared(
             file_get_contents($states_path)
         );
 
-        $cities_path = resource_path('database/cities.sql');
+        $cities_path = resource_path('database/cities.psql');
 
 
         \DB::unprepared(

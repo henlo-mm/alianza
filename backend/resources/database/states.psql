@@ -1,5 +1,5 @@
 
-INSERT INTO `states` ( `name`, `code`) VALUES
+INSERT INTO states (name, code) VALUES
 ('Antioquia', 5),
 ('Atlantico', 8),
 ('D. C. Santa Fe de Bogotá', 11),
@@ -9,8 +9,8 @@ INSERT INTO `states` ( `name`, `code`) VALUES
 ('Caqueta', 18),
 ('Cauca', 19),
 ('Cesar', 20),
-( 'Cordova', 23),
-( 'Cundinamarca', 25),
+('Cordova', 23),
+('Cundinamarca', 25),
 ( 'Choco', 27),
 ( 'Huila', 41),
 ( 'La Guajira', 44),

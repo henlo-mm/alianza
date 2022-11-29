@@ -1,9 +1,9 @@
 <template>
   <v-container> 
-    <v-row class="mt-6">
-      <div class="d-flex align-center  flex-column mb-6 mt-6">
-          <h2 class="font-weight-light">¡Bienvenido/a!</h2>
-          <h2 class="font-weight-light">¡Usuario Usuario!</h2>
+    <v-row class="mt-16 ml-16">
+      <div class="d-flex align-center  flex-column mb-6 mt-16">
+          <h2 class="font-weight-light">¡Bienvenido/a, <span  class="font-weight-medium">{{ name }}</span>!</h2>
+          
           <p class="mt-16">Añade los datos personales de tus empleados y después agrega su cargo en tu empresa</p>
           <v-btn
               icon
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import axios from "axios";
 
 import UserModal from './User'
   export default {
@@ -41,8 +42,29 @@ import UserModal from './User'
 
     data () {
       return {
-        show: false
+        show: false,
+        token: localStorage.getItem('token'),
+        name: null
       }
+    },
+    created () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      this.getAuthenticatedUser()
+    },
+    methods: {
+        async getAuthenticatedUser () {
+            try {
+
+                await axios
+                    .get(this.$baseUrl + 'auth_user')
+                    .then((response) => {
+                        console.log(response)
+                        this.name = response.data.name + ' ' + response.data.last_name
+            })
+            } catch (error) {
+                    console.log(error)
+            }
+        }
     }
   }
 </script>

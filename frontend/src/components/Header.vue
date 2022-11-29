@@ -10,7 +10,7 @@
             <v-menu offset-y nudge-bottom='8'>
                 <template v-slot:activator="{ on, attrs }">
                     <div class="d-flex flex-column mb-6 mt-6">
-                        <h6 style="color: #304FFE;">Usuario Usuario</h6>
+                        <h6 style="color: #304FFE;">{{ name }}</h6>
                         <h6 class="font-weight-regular">Administrador</h6>
                     </div>
                     
@@ -98,6 +98,7 @@ export default {
   },
   created() {
     axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+    this.getAuthenticatedUser()
 
   },
 
@@ -128,6 +129,7 @@ export default {
             title: "Salir"
         },
         mini: true,
+        name: null,
       }
     },
     methods: {
@@ -145,6 +147,19 @@ export default {
                 
             } catch (error) {
                 console.log(error)
+            }
+        },
+        async getAuthenticatedUser () {
+            try {
+
+                await axios
+                    .get(this.$baseUrl + 'auth_user')
+                    .then((response) => {
+                        console.log(response)
+                        this.name = response.data.name + ' ' + response.data.last_name
+            })
+            } catch (error) {
+                    console.log(error)
             }
         }
     }

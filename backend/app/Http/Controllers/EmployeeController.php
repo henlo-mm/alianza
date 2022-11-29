@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\City;
 use Validator;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -152,6 +153,14 @@ class EmployeeController extends Controller
         $cities = City::where('states_id', $request->state_id)->get();
 
         return response()->json($cities);
+
+    }
+
+    public function getAuthenticatedUser() 
+    {
+        $user = Auth::user()->user;
+
+        return response()->json($user);
 
     }
 }
