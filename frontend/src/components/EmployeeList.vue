@@ -6,23 +6,34 @@
             </v-btn>
             <h1 class="font-weight-regular">Empleados</h1>
         </div>
+    
         <div class="d-flex align-start mb-6 ml-8">
-            <v-btn rounded text color="indigo" style="text-transform: none;">
-                <v-icon> mdi-delete-outline</v-icon>
-                Borrar selección
-            </v-btn>
-            <v-btn rounded text color="indigo" style="text-transform: none;">
-                <v-icon> mdi-file-download-outline</v-icon>
-                Descargar datos
-            </v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn rounded outlined color="indigo"  class="mr-8" style="text-transform: none;" @click.stop="show=true">
+          <v-row>
+            <v-col cols="12" md="6" >
+              <v-row :column="$vuetify.breakpoint.mdAndDown">
+                <v-col cols="12" md="6">
+                  <v-btn rounded text color="indigo" style="text-transform: none;">
+                    <v-icon> mdi-delete-outline</v-icon>
+                    Borrar selección
+                </v-btn>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn rounded text color="indigo" style="text-transform: none;">
+                    <v-icon> mdi-file-download-outline</v-icon>
+                    Descargar datos
+                </v-btn>
+               
+                </v-col>
+              </v-row>
+            </v-col>
+            
+            <v-col cols="12" lg="6" :class="alignBtn()">
+              <v-btn rounded outlined color="indigo"  class="mr-8 ml-4" style="text-transform: none;" @click.stop="show=true">
                 <v-icon class="mr-1"> mdi-account-plus-outline</v-icon>
                 Agregar
             </v-btn>
-
+            </v-col>
+          </v-row>
         </div>
        
         <v-card class="ml-8 mr-8 mb-6">
@@ -179,6 +190,16 @@ import UserModal from './User'
       },
     },
     methods: {
+      alignBtn() {
+        if(window.innerWidth <= 600  ) {
+         
+          return 'none'
+        }else {
+          
+          return 'text-right'
+        }
+
+      },
       updateList () {
         this.getEmployees()  
       },

@@ -49,9 +49,12 @@
         </v-app-bar>
 
         <v-navigation-drawer
+            :width="width"
+            heigth="100vh"
             app
             clipped
             color="indigo accent-4"
+            class="navigation-h"
             dark
             v-model="drawer"
             :mini-variant.sync="mini"
@@ -132,7 +135,17 @@ export default {
         name: null,
       }
     },
+    computed: {
+        
+        width () {
+            if(window.innerWidt <= 600) 
+                return 150 
+                else 
+                return 200
+        },
+    },
     methods: {
+        
         async logout() {
                 
             try {
@@ -181,10 +194,6 @@ export default {
     caret-color: #1976d2 !important;
 }
 
-/* .hover-item:hover {
-    background-color: #304FFE !important;
-    color: white;
-} */
 </style>
 
 
