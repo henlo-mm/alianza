@@ -151,8 +151,14 @@ export default {
                 document: '',
                 address: '',
                 phone: '',
-                department: '22',
-                city: '',
+                department: {
+                    id: '',
+                    value: ''
+                },
+                city: {
+                    id: '',
+                    value: ''
+                },
             },
             employee: [],
             cities: null,
@@ -163,6 +169,7 @@ export default {
     },
     created () {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      
     },
     mounted () {
         
@@ -188,19 +195,19 @@ export default {
             const response = await axios.get(this.$baseUrl + 'employees/' + this.data);
       
             this.employee = response.data; 
+            this.getCities(this.employee.states_id)
    
             this.setForm();
         },
 
-        getCities (id) {
+        async getCities (id) {
             try {
-              
-                this.form.department = id
-                axios
-                .post(this.$baseUrl + 'cities', { state_id: this.form.department })
-                .then(response => (
+        
+                await axios
+                .post(this.$baseUrl + 'cities', { state_id: id })
+                .then((response) => {  
                     this.cities = response.data  
-                ))
+            })
 
                 
             } catch (error) {
@@ -226,6 +233,7 @@ export default {
         },
         setForm () {
             if (this.employee) {
+                
                 this.form.document = this.employee.document;
                 this.form.name = this.employee.name;
                 this.form.lastName = this.employee.last_name;

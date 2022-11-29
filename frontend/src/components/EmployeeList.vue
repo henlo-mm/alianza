@@ -192,7 +192,7 @@ import UserModal from './User'
             await axios
               .get(this.$baseUrl + 'employees')
               .then((response) => {
-                console.log(response.data)
+        
                 this.employees = response.data 
                       
           })

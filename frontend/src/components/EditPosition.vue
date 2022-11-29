@@ -158,12 +158,24 @@ export default {
             name: '',
             form: {
                 id: this.pos,
-                name: '',
+                name: {
+                    id: '',
+                    value: ''
+                },
                 document: '',
                 area: '',
-                position: '',
-                role: null,
-                chief: null
+                position: {
+                    id: '',
+                    value: ''
+                },
+                role: {
+                    id: '',
+                    value: ''
+                },
+                chief: {
+                    id: '',
+                    value: ''
+                }
             },
             positions: [],
             employees: [],
@@ -265,7 +277,7 @@ export default {
                 this.form.name = this.position.employee_id;
                 this.form.document = this.position.document;
                 this.form.area = this.position.area;
-                this.form.position_id = this.position.position_id;
+                this.form.position = this.position.position_id;
                 this.form.role = this.position.rol_id;
                 this.form.chief = this.position.chief_id;
 
