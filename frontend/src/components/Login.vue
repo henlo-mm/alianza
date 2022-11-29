@@ -5,6 +5,7 @@
           <v-parallax
             id="parallax"
             class="parallax-h"
+            :class="displayImage()"
             dark
           >
           <!-- <v-parallax
@@ -32,7 +33,7 @@
             </v-row>
           </v-parallax>
         </v-col>
-        <v-col md="4">
+        <v-col md="4" xl="8">
           <div class="container">
             <v-img
               class="img-login"
@@ -120,18 +121,29 @@ export default {
       }
     }
   },
+  computed: {
+   
+
+  },
   created () {
 
   },
   methods: {
 
+    displayImage() {
+      if(window.innerWidth <= 600) {
+        return "d-none"
+      }else {
+        return ""
+      }
+      
+    },
     async login () {
       try {
               
         await axios
           .post(this.$baseUrl + 'login', this.form)
           .then((response) => {
-            console.log(response)
             localStorage.setItem('token', response.data.access_token);
             this.$router.push("/dashboard"); 
         })
